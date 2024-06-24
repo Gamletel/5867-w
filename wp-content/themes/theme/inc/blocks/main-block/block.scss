@@ -1,0 +1,124 @@
+@import '../../../assets/css/_colors.scss';
+
+@function calcFluidFontSize($f-min, $f-max, $v-min, $v-max) {
+  $k: ($f-max - $f-min)/($v-max - $v-min);
+  $b: $f-min - $k * $v-min;
+
+  $b: $b * 1px;
+
+  @return calc(#{$k} * 100vw + #{$b});
+}
+
+#main-block {
+  .products-categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    .products-wrapper {
+      padding: 25px 30px;
+      border-radius: 15px;
+
+      &__title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+
+        color: var(--Head, #292929);
+        font-size: calcFluidFontSize(18, 20, 320, 1920);
+        font-style: normal;
+        font-weight: 500;
+        line-height: 140%; /* 28px */
+
+        svg, img {
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+        }
+      }
+
+      &.most-popular {
+        background-color: var(--Accent-1);
+      }
+
+      &.last-purchased {
+        background-color: var(--Accent-2);
+      }
+
+      &.last-added {
+        background-color: var(--Accent-3);
+      }
+
+      .products {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+      }
+    }
+  }
+}
+
+/*============ MEDIA ==================*/
+@media (max-width: 1700px) {
+  #main-block {
+    .products-categories {
+      grid-template-columns: 1fr;
+      grid-gap: 15px;
+
+      .products-wrapper {
+        .products {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1240px) {
+
+}
+
+@media (max-width: 1221px) {
+
+}
+
+@media (max-width: 1025px) {
+
+}
+
+@media (max-width: 992px) {
+  #main-block {
+    .products-categories {
+      .products-wrapper {
+        .products {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 769px) {
+
+}
+
+@media (max-width: 576px) {
+  #main-block {
+    .products-categories {
+      .products-wrapper {
+        padding: 15px 20px;
+        .products {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 498px) {
+
+}
+
+@media (max-width: 375px) {
+
+}

@@ -1,0 +1,147 @@
+@import '../../../assets/css/_colors.scss';
+
+@function calcFluidFontSize($f-min, $f-max, $v-min, $v-max) {
+  $k: ($f-max - $f-min)/($v-max - $v-min);
+  $b: $f-min - $k * $v-min;
+
+  $b: $b * 1px;
+
+  @return calc(#{$k} * 100vw + #{$b});
+}
+
+#pay-delivery-block {
+
+  .block__content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .content {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 20px;
+    background: var(--Card, #FFF);
+
+    &__text {
+      padding: 60px 130px 60px 120px;
+    }
+
+    &__title {
+      margin-bottom: 40px;
+    }
+
+    &__images {
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      justify-content: center;
+      align-content: center;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 30px;
+      padding: 75px 65px;
+      border-radius: 20px;
+      border: 1px solid var(--Background-dark, #DFDFDF);
+      background: var(--Background-light, #F8F8F8);
+
+      img, svg {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+      }
+    }
+  }
+}
+
+/*============ MEDIA ==================*/
+@media (max-width: 1400px) {
+  #pay-delivery-block {
+    .content {
+      &__text {
+        padding: 30px 80px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1240px) {
+
+}
+
+@media (max-width: 1221px) {
+  #pay-delivery-block {
+    .content {
+      &__text {
+        padding: 30px 40px;
+      }
+
+      &__images {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
+
+@media (max-width: 1025px) {
+
+}
+
+@media (max-width: 992px) {
+  #pay-delivery-block {
+    .content {
+      flex-direction: column;
+
+      &__images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        padding: 40px 30px;
+      }
+    }
+  }
+}
+
+@media (max-width: 769px) {
+  #pay-delivery-block {
+    .content {
+      &__images {
+        img, svg {
+          width: 75px;
+          height: 75px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  #pay-delivery-block {
+    .content {
+      &__title {
+        margin-bottom: 20px;
+      }
+
+      &__text {
+        padding: 15px 20px;
+      }
+
+      &__images {
+        gap: 15px;
+        padding: 20px 15px;
+
+        img, svg {
+          width: 50px;
+          height: 50px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 498px) {
+
+}
+
+@media (max-width: 375px) {
+
+}

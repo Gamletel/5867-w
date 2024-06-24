@@ -1,0 +1,158 @@
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class ThemeModal {
+  constructor() {
+
+    _defineProperty(this, "buttonsCloseModal", void 0);
+
+    _defineProperty(this, "modalsView", []);
+
+    _defineProperty(this, "self", void 0);
+
+    _defineProperty(this, "instance", void 0);
+
+    if (typeof ThemeModal.instance === 'object') {
+      return ThemeModal.instance;
+    }
+
+    ThemeModal.instance = this;
+    this.buttonsCloseModal = document.querySelectorAll('.close-modal');
+    self = this;
+    return ThemeModal.instance;
+  }
+
+  createBackground() {
+    if (!document.getElementById('modal-background')) {
+      let modalBackground = document.createElement('div');
+      modalBackground.id = 'modal-background';
+      modalBackground.style.position = 'fixed';
+      modalBackground.style.left = '0';
+      modalBackground.style.right = '0';
+      modalBackground.style.top = '0';
+      modalBackground.style.bottom = '0';
+      modalBackground.style.background = '#021136';
+      modalBackground.style.opacity = '0.5';
+      modalBackground.style.zIndex = '9999';
+      document.body.insertBefore(modalBackground, document.getElementById('footer'));
+    }
+  }
+
+  removeBackground() {
+    let bg = document.getElementById('modal-background');
+
+    if (bg != undefined) {
+      bg.remove();
+    }
+  }
+
+  openModal(modalId) {
+    if (document.getElementById(`modal-${modalId}`)) {
+      let modal = document.getElementById(`modal-${modalId}`);
+
+      modal.classList.add('modal-open');
+      self.createBackground(); // document.body.addEventListener('mouseup', self.mouseUpHandler);
+
+      self.buttonsCloseModal.forEach(function (el, key) {
+        el.addEventListener('click', self.closeModal);
+      });
+    }
+  }
+
+  closeModal() {
+    let modals = document.querySelectorAll('.theme-modal.modal-open');
+    modals.forEach(function (el, key) {
+      el.classList.remove('modal-open');
+    });
+    self.removeBackground(); // document.body.removeEventListener('mouseup', self.mouseUpHandler, false);
+
+    self.buttonsCloseModal.forEach(function (el, key) {
+      el.removeEventListener('click', self.closeModal, false);
+    });
+  }
+
+  
+  openModalHandler(ev){
+    let modalId = ev.target ? ev.target.getAttribute('data-modal') : ev;
+    if(modalId) {
+      if (self.modalsView.hasOwnProperty(modalId)){
+        self.modalsView[modalId].props = event.target.attributes;
+        let props = self.modalsView[modalId].props;
+        let modal = document.getElementById(`modal-${modalId}`);
+        self.modalsView[modalId].callback.call(null, modal, props);
+      }else{
+        self.openModal(modalId);
+      }
+    }
+  }
+
+  mouseUpHandler(e) {
+    if (document.querySelector('.theme-modal.modal-open')) {
+      let activeModal = document.querySelector('.theme-modal.modal-open');
+
+      if (!activeModal.isEqualNode(e.target) && !activeModal.contains(e.target)) {
+        self.closeModal();
+      }
+    }
+  }
+
+  buttonsListener() {
+    let th = this;
+    document.addEventListener('click', function(ev){
+      if(ev.target && ev.target.dataset) {
+        if('modal' in ev.target.dataset) {
+          th.openModalHandler(ev);
+        }
+      }
+    });
+  }
+
+  contactFormListener() {
+    document.body.addEventListener('wpcf7mailsent', function () {
+      self.closeModal();
+      self.openModal('success');
+      setTimeout(function () {
+        self.closeModal();
+      }, 2000);
+    });
+    document.body.addEventListener('wpcf7mailfailed', function () {
+      self.closeModal();
+      self.openModal('error');
+      setTimeout(function () {
+        self.closeModal();
+      }, 5000);
+    });
+  }
+
+  init() {
+    this.buttonsListener();
+    this.contactFormListener();
+  }
+
+  static getInstance() {
+    if (typeof ThemeModal.instance === 'object') {
+      return ThemeModal.instance;
+    }
+
+    ThemeModal.instance = this;
+    return new ThemeModal();
+  }
+  
+  static reinitForms(form = false) {
+    if(form) {
+      wpcf7.init( form );
+    }else{
+      let forms = document.querySelectorAll('.wpcf7 > form');
+      forms.forEach(form => wpcf7.init( form ));
+    }
+    
+    let inputTels = document.querySelectorAll('input[type=tel]');
+    if(inputTels.length) {
+      inputTels.forEach((input) => {
+        jQuery(input).inputmask({"mask": "+7 999 999-99-99"});
+      });
+    }
+  }
+
+}
+
+window.ThemeModal = ThemeModal;
